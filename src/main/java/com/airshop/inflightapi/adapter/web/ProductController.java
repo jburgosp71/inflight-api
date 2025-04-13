@@ -1,5 +1,7 @@
 package com.airshop.inflightapi.adapter.web;
 
+import com.airshop.inflightapi.adapter.persistence.mapper.DtoMapper;
+import com.airshop.inflightapi.adapter.web.dto.ProductResponse;
 import com.airshop.inflightapi.application.port.in.CreateProductUseCase;
 import com.airshop.inflightapi.application.port.in.GetProductsUseCase;
 import com.airshop.inflightapi.domain.model.Product;
@@ -17,8 +19,11 @@ public class ProductController {
     private final CreateProductUseCase createProductUseCase;
 
     @GetMapping
-    public List<Product> getAll(@RequestParam(value = "categoryId", required = false) Long categoryId) {
-        return getProductsUseCase.getAll(categoryId);
+    public List<ProductResponse> getAll(@RequestParam(value = "categoryId", required = false) Long categoryId) {
+        return getProductsUseCase.getAll(categoryId)
+                .stream()
+                .map(DtoMapper::toResponse)
+                .toList();
     }
 
     @PostMapping

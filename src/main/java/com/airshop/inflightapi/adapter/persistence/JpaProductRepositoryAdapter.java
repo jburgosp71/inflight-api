@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -18,15 +17,16 @@ public class JpaProductRepositoryAdapter implements ProductRepository {
     private final SpringDataProductRepository springRepo;
 
     @Override
-    public List<Product> findAll() {
-        return springRepo.findAll()
+    public List<Product> findAll(Long categoryId) {
+        if (categoryId != null) {
+            return springRepo.findByCategoryId(categoryId)
+                    .stream().map(ProductMapper::toDomain)
+                    .collect(Collectors.toList());
+        } else {
+            return springRepo.findAll()
                 .stream().map(ProductMapper::toDomain)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<Product> findById(Long id) {
-        return springRepo.findById(id).map(ProductMapper::toDomain);
+        }
     }
 
     @Override

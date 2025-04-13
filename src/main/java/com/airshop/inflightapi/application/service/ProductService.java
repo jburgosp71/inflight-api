@@ -17,7 +17,7 @@ public class ProductService implements GetProductsUseCase, CreateProductUseCase 
 
     @Override
     public List<Product> getAll(Long categoryId) {
-        return productRepository.findAll();
+        return productRepository.findAll(categoryId);
     }
 
     @Override

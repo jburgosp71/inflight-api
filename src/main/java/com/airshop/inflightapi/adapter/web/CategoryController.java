@@ -1,5 +1,7 @@
 package com.airshop.inflightapi.adapter.web;
 
+import com.airshop.inflightapi.adapter.persistence.mapper.DtoMapper;
+import com.airshop.inflightapi.adapter.web.dto.CategoryResponse;
 import com.airshop.inflightapi.application.port.in.CreateCategoryUseCase;
 import com.airshop.inflightapi.application.port.in.GetCategoriesUseCase;
 import com.airshop.inflightapi.domain.model.Category;
@@ -17,8 +19,11 @@ public class CategoryController {
     private final CreateCategoryUseCase createCategoryUseCase;
 
     @GetMapping
-    public List<Category> getAll() {
-        return getCategoriesUseCase.getAll();
+    public List<CategoryResponse> getAll() {
+        return getCategoriesUseCase.getAll()
+                .stream()
+                .map(DtoMapper::toResponse)
+                .toList();
     }
 
     @PostMapping
