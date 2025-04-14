@@ -18,6 +18,12 @@ public class CategoryService implements CreateCategoryUseCase, GetCategoriesUseC
         return categoryRepository.findAll();
     }
 
+    @Override
+    public Category getById(Long id) {
+        return categoryRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Category not found with ID: " + id));
+    }
+
     public Category create(Category category) {
         return categoryRepository.save(category);
     }

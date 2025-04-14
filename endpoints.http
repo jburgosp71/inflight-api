@@ -1,0 +1,51 @@
+//http://localhost:8081/api/products
+
+//POST http://localhost:8081/api/products
+//Content-Type: application/json
+
+//{
+//  "name": "Agua con gas",
+//  "price": 2.00,
+//  "stock": 100,
+//  "categoryId": 4
+//}
+
+//http://localhost:8081/api/categories
+
+//POST http://localhost:8081/api/categories
+//Content-Type: application/json
+
+//{
+//    "name": "Otra categoria"
+//}
+
+//POST http://localhost:8081/api/categories
+//Content-Type: application/json
+
+//{
+//  "name": "Dulces",
+//  "parentCategoryId": 8
+//}
+
+//POST http://localhost:8081/api/orders
+//Content-Type: application/json
+
+//{
+//  "seatLetter": "B",
+//  "seatNumber": 5
+//}
+
+PUT http://localhost:8081/api/orders/1
+Content-Type: application/json
+
+{
+  "buyerEmail": "cliente@ejemplo.com",
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 2
+    }
+  ]
+}
+
+

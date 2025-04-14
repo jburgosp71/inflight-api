@@ -17,6 +17,10 @@ public class PaymentDetails {
     private LocalDateTime paymentDate;
     private String gateway;
 
+    public static PaymentDetails empty() {
+        return new PaymentDetails(0.0, null, null, null, null);
+    }
+
     public PaymentDetails(double totalPrice, String cardToken, PaymentStatus status,
                           LocalDateTime paymentDate, String gateway) {
         this.totalPrice = totalPrice;

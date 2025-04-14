@@ -18,5 +18,6 @@ public class OrderItemEntity {
     @ManyToOne
     private ProductEntity product;
 
+
     private int quantity;
 }

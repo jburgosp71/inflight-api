@@ -5,4 +5,5 @@ import com.airshop.inflightapi.domain.model.Category;
 
 public interface GetCategoriesUseCase {
     List<Category> getAll();
+    Category getById(Long id);
 }

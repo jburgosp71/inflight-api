@@ -6,6 +6,10 @@ import com.airshop.inflightapi.domain.model.PaymentDetails;
 public class PaymentDetailsMapper {
 
     public static PaymentDetails toDomain(PaymentDetailsEmbeddable embeddable) {
+        if (embeddable == null) {
+            return PaymentDetails.empty();
+        }
+
         return new PaymentDetails(
                 embeddable.getTotalPrice(),
                 embeddable.getCardToken(),
@@ -16,6 +20,10 @@ public class PaymentDetailsMapper {
     }
 
     public static PaymentDetailsEmbeddable toEntity(PaymentDetails details) {
+        if (details == null) {
+            return new PaymentDetailsEmbeddable(); // Devuelve un objeto vacío
+        }
+
         PaymentDetailsEmbeddable entity = new PaymentDetailsEmbeddable();
         entity.setTotalPrice(details.getTotalPrice());
         entity.setCardToken(details.getCardToken());

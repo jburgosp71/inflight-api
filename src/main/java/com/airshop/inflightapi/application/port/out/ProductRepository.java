@@ -7,4 +7,6 @@ import java.util.List;
 public interface ProductRepository {
     List<Product> findAll(Long categoryId);
     Product save(Product product);
+    boolean checkStock(Long productId, int quantity);
+    Product findById(Long productId);
 }
