@@ -9,14 +9,13 @@ import com.airshop.inflightapi.domain.model.enums.PaymentStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 public class OrderService implements CreateOrderUseCase, UpdateOrderUseCase, GetOrderUseCase, FinalizeOrderUseCase {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final ProcessPaymentUseCase paymentProcessor;
 
     @Override
     public Order create(Order order) {
@@ -80,21 +79,22 @@ public class OrderService implements CreateOrderUseCase, UpdateOrderUseCase, Get
             throw new IllegalArgumentException("Order not found.");
         }
 
-        PaymentDetails details = order.getPaymentDetails();
-        if (details == null) {
-            details = new PaymentDetails();
+        if (order.getStatus() == OrderStatus.CONFIRMED) {
+            throw new IllegalArgumentException("The order " + orderId + " has already been completed.");
         }
 
-        details.setCardToken(inputOrder.getPaymentDetails().getCardToken());
-        details.setGateway(inputOrder.getPaymentDetails().getGateway());
-        details.setStatus(inputOrder.getPaymentDetails().getStatus());
-        details.setPaymentDate(LocalDateTime.now());
+        PaymentDetails paymentInput = inputOrder.getPaymentDetails();
+        if (paymentInput == null) {
+            throw new IllegalArgumentException("Payment details are required.");
+        }
 
-        order.setPaymentDetails(details);
+        PaymentDetails processedDetails = paymentProcessor.process(paymentInput);
+        order.setPaymentDetails(processedDetails);
 
-        if (details.getStatus() == PaymentStatus.PAID) {
+        if (processedDetails.getStatus() == PaymentStatus.PAID) {
             order.setStatus(OrderStatus.CONFIRMED);
-        } else if (details.getStatus() == PaymentStatus.FAILED) {
+        } else if (processedDetails.getStatus() == PaymentStatus.FAILED ||
+                   processedDetails.getStatus() == PaymentStatus.OFFLINE) {
             order.setStatus(OrderStatus.PENDING);
         }
 

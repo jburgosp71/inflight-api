@@ -17,16 +17,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JpaProductRepositoryAdapter implements ProductRepository {
 
-    private final SpringDataProductRepository springRepo;
+    private final SpringDataProductRepository springDataProductRepository;
 
     @Override
     public List<Product> findAll(Long categoryId) {
         if (categoryId != null) {
-            return springRepo.findByCategoryId(categoryId)
+            return springDataProductRepository.findByCategoryId(categoryId)
                     .stream().map(ProductMapper::toDomain)
                     .collect(Collectors.toList());
         } else {
-            return springRepo.findAll()
+            return springDataProductRepository.findAll()
                 .stream().map(ProductMapper::toDomain)
                 .collect(Collectors.toList());
         }
@@ -35,14 +35,14 @@ public class JpaProductRepositoryAdapter implements ProductRepository {
     @Override
     public Product save(Product product) {
         return ProductMapper.toDomain(
-                springRepo.save(ProductMapper.toEntity(product))
+                springDataProductRepository.save(ProductMapper.toEntity(product))
         );
     }
 
     @Override
     public boolean checkStock(Long productId, int quantity) {
         Optional<ProductEntity> productEntityOptional =
-                springRepo.findById(productId);
+                springDataProductRepository.findById(productId);
 
         return productEntityOptional
                 .map(entity -> entity.getStock() >= quantity)
@@ -51,7 +51,7 @@ public class JpaProductRepositoryAdapter implements ProductRepository {
 
     @Override
     public Product findById(Long productId) {
-        return springRepo.findById(productId)
+        return springDataProductRepository.findById(productId)
                 .map(ProductMapper::toDomain)
                 .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + productId));
     }

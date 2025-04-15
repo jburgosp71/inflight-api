@@ -21,7 +21,7 @@ public class PaymentDetailsMapper {
 
     public static PaymentDetailsEmbeddable toEntity(PaymentDetails details) {
         if (details == null) {
-            return new PaymentDetailsEmbeddable(); // Devuelve un objeto vacío
+            return new PaymentDetailsEmbeddable();
         }
 
         PaymentDetailsEmbeddable entity = new PaymentDetailsEmbeddable();

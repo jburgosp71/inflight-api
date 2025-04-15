@@ -24,7 +24,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void shouldReturnAllProductsWhenCategoryIdIsNull() {
+    void testShouldReturnAllProductsWhenCategoryIdIsNull() {
         Category drinks = new Category(1L, "Drinks", null);
         Category snacks = new Category(2L, "Snacks", null);
 
@@ -40,7 +40,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void shouldReturnProductsByCategoryId() {
+    void testShouldReturnProductsByCategoryId() {
         Category drinks = new Category(1L, "Drinks", null);
 
         Product soda = new Product(1L, "Soda", 2.5, "http://example.com/soda.jpg", 100, drinks);
@@ -54,7 +54,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void shouldCreateProduct() {
+    void testShouldCreateProduct() {
         Category drinks = new Category(1L, "Drinks", null);
         Product input = new Product(null, "Juice", 3.0, "http://example.com/juice.jpg", 200, drinks);
         Product saved = new Product(99L, "Juice", 3.0, "http://example.com/juice.jpg", 200, drinks);

@@ -23,7 +23,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    void shouldReturnAllCategories() {
+    void testShouldReturnAllCategories() {
         Category drinks = new Category(1L, "Drinks", null);
         Category snacks = new Category(2L, "Snacks", null);
         when(categoryRepository.findAll()).thenReturn(List.of(drinks, snacks));
@@ -35,7 +35,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    void shouldCreateCategory() {
+    void testShouldCreateCategory() {
         Category input = new Category(null, "New", null);
         Category saved = new Category(99L, "New", null);
         when(categoryRepository.save(input)).thenReturn(saved);

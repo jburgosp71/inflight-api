@@ -1,11 +1,11 @@
 
-## ✈️ Inflight API - Airshop
+## Inflight API - Airshop
 
 API para la gestión de productos y pedidos a bordo de vuelos.
 
 ---
 
-## 🔐 Seguridad
+## Seguridad
 
 Todos los endpoints están protegidos mediante **Autenticación Básica HTTP (Basic Auth)**.  
 Debes enviar el header:
@@ -16,9 +16,9 @@ Authorization: Basic <base64(username:password)>
 
 ---
 
-## 📦 Endpoints de Productos
+## Endpoints de Productos
 
-### 🔍 Listar todos los productos
+### Listar todos los productos
 
 **GET** `/api/products`
 
@@ -40,7 +40,7 @@ Authorization: Basic <base64(username:password)>
 
 ---
 
-### 🆕 Crear un producto
+### Crear un producto
 
 **POST** `/api/products`
 
@@ -67,9 +67,9 @@ Authorization: Basic <base64(username:password)>
 
 ---
 
-## 🗂️ Endpoints de Categorías
+## Endpoints de Categorías
 
-### 🔍 Listar categorías
+### Listar categorías
 
 **GET** `/api/categories`
 
@@ -89,7 +89,7 @@ Authorization: Basic <base64(username:password)>
 
 ---
 
-### 🆕 Crear una categoría
+### Crear una categoría
 
 **POST** `/api/categories`
 
@@ -110,9 +110,9 @@ Authorization: Basic <base64(username:password)>
 
 ---
 
-## 🧾 Endpoints de Órdenes
+## Endpoints de Órdenes
 
-### 🆕 Crear una orden
+### Crear una orden
 
 **POST** `/api/orders`
 
@@ -138,7 +138,7 @@ Authorization: Basic <base64(username:password)>
 
 ---
 
-### 🔁 Modificar una orden
+### Modificar una orden
 
 **PUT** `/api/orders/{orderId}`
 
@@ -161,7 +161,7 @@ Authorization: Basic <base64(username:password)>
 
 ---
 
-### 🧾 Finalizar una orden (mock de pago)
+### Finalizar una orden (mock de pago)
 
 **POST** `/api/orders/{orderId}/finalize`
 
@@ -190,7 +190,7 @@ Authorization: Basic <base64(username:password)>
 
 ---
 
-### 🔍 Obtener una orden
+### Obtener una orden
 
 **GET** `/api/orders/{orderId}`
 
@@ -208,24 +208,23 @@ Authorization: Basic <base64(username:password)>
 
 ---
 
-## 🛡️ Mock de Pasarela de Pago
+## Mock de Pasarela de Pago
 
 - El pago se simula en el endpoint `/orders/{orderId}/finalize`.
-- Puedes enviar un estado `PAID`, `FAILED` u `OFFLINE`.
+- Puedes enviar un estado `PAID`, `FAILED` u `OFFLINE` (34%, 33%, 33%).
 - El comportamiento simula una pasarela real sin integración externa.
 
 ---
 
-## 📌 Notas
+## Notas
 
-- Todos los valores monetarios están en dólares.
 - El stock de productos se valida al modificar una orden.
 - Una orden sin stock suficiente no podrá ser actualizada.
-- Una orden se puede crear inicialmente solo con el asiento.
+- Una orden se puede crear inicialmente solo con los datos del asiento (letra y número).
 
 ---
 
-## 🚀 Autenticación para pruebas
+## Autenticación para pruebas
 
 ```
 Usuario: admin

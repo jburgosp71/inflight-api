@@ -5,7 +5,6 @@ import com.airshop.inflightapi.adapter.persistence.entity.OrderItemEntity;
 import com.airshop.inflightapi.adapter.persistence.entity.ProductEntity;
 import com.airshop.inflightapi.adapter.persistence.mapper.OrderItemMapper;
 import com.airshop.inflightapi.adapter.persistence.mapper.OrderMapper;
-import com.airshop.inflightapi.adapter.persistence.mapper.PaymentDetailsMapper;
 import com.airshop.inflightapi.adapter.persistence.repository.SpringDataOrderRepository;
 import com.airshop.inflightapi.adapter.persistence.repository.SpringDataProductRepository;
 import com.airshop.inflightapi.application.port.out.OrderRepository;
@@ -27,13 +26,6 @@ public class JpaOrderRepositoryAdapter implements OrderRepository {
 
     @Override
     public Order save(Order order) {
-        /*
-        return OrderMapper.toDomain(
-                jpaOrderRepository.save(OrderMapper.toEntity(order))
-        );
-         */
-        OrderEntity entity = new OrderEntity();
-
         List<OrderItemEntity> itemEntities = new ArrayList<>();
         if (order.getItems() != null && !order.getItems().isEmpty()) {
             for (OrderItem item : order.getItems()) {
@@ -43,15 +35,9 @@ public class JpaOrderRepositoryAdapter implements OrderRepository {
             }
         }
 
-        entity.setId(order.getId());
-        entity.setItems(itemEntities);
-        entity.setBuyerEmail(order.getBuyerEmail());
-        entity.setSeatLetter(order.getSeatLetter());
-        entity.setSeatNumber(order.getSeatNumber());
-        entity.setStatus(order.getStatus());
-        entity.setPaymentDetails(PaymentDetailsMapper.toEntity(order.getPaymentDetails()));
-
+        OrderEntity entity = OrderMapper.toEntity(order, itemEntities);
         OrderEntity saved = jpaOrderRepository.save(entity);
+
         return OrderMapper.toDomain(saved);
     }
 

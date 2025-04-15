@@ -16,23 +16,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JpaCategoryRepositoryAdapter implements CategoryRepository {
 
-    private final SpringDataCategoryRepository springRepo;
+    private final SpringDataCategoryRepository springDataCategoryRepository;
 
     @Override
     public List<Category> findAll() {
-        return springRepo.findAll()
+        return springDataCategoryRepository.findAll()
                 .stream().map(CategoryMapper::toDomain)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Category save(Category category) {
-        CategoryEntity saved = springRepo.save(CategoryMapper.toEntity(category));
+        CategoryEntity saved = springDataCategoryRepository.save(CategoryMapper.toEntity(category));
         return CategoryMapper.toDomain(saved);
     }
 
     @Override
     public Optional<Category> findById(Long id) {
-        return springRepo.findById(id).map(CategoryMapper::toDomain);
+        return springDataCategoryRepository.findById(id).map(CategoryMapper::toDomain);
     }
 }
