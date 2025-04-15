@@ -234,6 +234,44 @@ Authorization: Basic YWRtaW46YWRtaW4=
 
 ---
 
+## Pasos para usar el contenedor Docker
+
+### 1. Construir la imagen de la aplicación
+
+Primero, limpia y construye el proyecto utilizando Gradle:
+
+```bash
+./gradlew clean build
+```
+
+### 2. Construir el contenedor Docker 
+A continuación, construimos la imagen Docker para la aplicación con el siguiente comando:
+
+```bash
+docker build -t inflight-api .
+```
+
+### 3. Iniciar el contenedor
+Iniciamos el contenedor con docker-compose:
+
+```bash
+docker-compose up -d
+```
+
+### 4. Detener el contenedor
+Cuando hayamos acabado de usar el aplicativo ejecutamos el siguiente comando:
+
+```bash
+docker-compose down
+```
+
+### 5. Ejecutar los tests
+Para ejecutar todos los tests de la aplicación:
+
+```bash
+./gradlew test
+```
+
 ## Notas
 
 - El stock de productos se valida al modificar una orden.
