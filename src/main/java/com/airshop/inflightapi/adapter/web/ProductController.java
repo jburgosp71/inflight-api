@@ -20,7 +20,7 @@ public class ProductController {
 
     private final GetProductsUseCase getProductsUseCase;
     private final CreateProductUseCase createProductUseCase;
-    private final GetCategoriesUseCase getCategoryUseCase;
+    private final GetCategoriesUseCase getCategoriesUseCase;
 
     @GetMapping
     public List<ProductResponse> getAll(@RequestParam(value = "categoryId", required = false) Long categoryId) {
@@ -32,7 +32,7 @@ public class ProductController {
 
     @PostMapping
     public Product create(@RequestBody ProductRequest request) {
-        Category category = getCategoryUseCase.getById(request.getCategoryId());
+        Category category = getCategoriesUseCase.getById(request.getCategoryId());
         Product product = DtoMapper.toDomain(request, category);
 
         return createProductUseCase.create(product);
