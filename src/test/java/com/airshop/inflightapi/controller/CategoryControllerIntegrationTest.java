@@ -32,10 +32,12 @@ class CategoryControllerIntegrationTest {
 
     @Test
     void testShouldCreateAndRetrieveCategoriesWithParent() {
+        var authRestTemplate = restTemplate.withBasicAuth("admin", "admin");
+
         CategoryRequest parentRequest = new CategoryRequest();
         parentRequest.setName("Snacks");
 
-        ResponseEntity<Category> parentResponse = restTemplate.postForEntity(
+        ResponseEntity<Category> parentResponse = authRestTemplate.postForEntity(
                 baseUrl(), parentRequest, Category.class);
 
         assertThat(parentResponse.getStatusCode().is2xxSuccessful()).isTrue();
@@ -47,7 +49,7 @@ class CategoryControllerIntegrationTest {
         childRequest.setName("Chips");
         childRequest.setParentCategoryId(parentCategory.getId());
 
-        ResponseEntity<Category> childResponse = restTemplate.postForEntity(
+        ResponseEntity<Category> childResponse = authRestTemplate.postForEntity(
                 baseUrl(), childRequest, Category.class);
 
         assertThat(childResponse.getStatusCode().is2xxSuccessful()).isTrue();
@@ -56,7 +58,7 @@ class CategoryControllerIntegrationTest {
         assertThat(childCategory.getParentCategory()).isNotNull();
         assertThat(childCategory.getParentCategory().getId()).isEqualTo(parentCategory.getId());
 
-        ResponseEntity<CategoryResponse[]> getAllResponse = restTemplate.getForEntity(
+        ResponseEntity<CategoryResponse[]> getAllResponse = authRestTemplate.getForEntity(
                 baseUrl(), CategoryResponse[].class);
 
         assertThat(getAllResponse.getStatusCode().is2xxSuccessful()).isTrue();

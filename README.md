@@ -13,6 +13,24 @@ Debes enviar el header:
 ```
 Authorization: Basic <base64(username:password)>
 ```
+El usuario/password esta configurado en el fichero:
+```
+src/main/java/com/airshop/inflightapi/config/SecurityConfig.java
+````
+
+Ejemplo:
+````
+POST http://localhost:8081/api/products
+Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "name": "Agua con gas",
+  "price": 2.00,
+  "stock": 100,
+  "categoryId": 4
+}
+````
 
 ---
 
@@ -224,9 +242,3 @@ Authorization: Basic <base64(username:password)>
 
 ---
 
-## Autenticación para pruebas
-
-```
-Usuario: admin
-Contraseña: admin123
-```

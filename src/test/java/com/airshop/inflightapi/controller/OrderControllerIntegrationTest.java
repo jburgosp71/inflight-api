@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class OrderControllerIntegrationTest {
     @Autowired
-    private TestRestTemplate restTemplate;
+    private TestRestTemplate restTemplate, authRestTemplate;
 
     @LocalServerPort
     private int port;
@@ -33,16 +33,19 @@ public class OrderControllerIntegrationTest {
     @BeforeEach
     public void setUp() {
         baseUrl = "http://localhost:" + port + "/api/orders";
+        authRestTemplate = restTemplate.withBasicAuth("admin", "admin");
     }
 
     @Test
     @org.junit.jupiter.api.Order(1)
     public void testCreateOrder() {
+
+
         Order request = new Order();
         request.setSeatLetter("C");
         request.setSeatNumber(7);
 
-        ResponseEntity<OrderResponse> response = restTemplate.postForEntity(baseUrl, request, OrderResponse.class);
+        ResponseEntity<OrderResponse> response = authRestTemplate.postForEntity(baseUrl, request, OrderResponse.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -57,10 +60,10 @@ public class OrderControllerIntegrationTest {
         Order request = new Order();
         request.setSeatLetter("A");
         request.setSeatNumber(1);
-        OrderResponse created = restTemplate.postForEntity(baseUrl, request, OrderResponse.class).getBody();
+        OrderResponse created = authRestTemplate.postForEntity(baseUrl, request, OrderResponse.class).getBody();
 
         assert created != null;
-        ResponseEntity<OrderResponse> response = restTemplate.getForEntity(baseUrl + "/" + created.getId(), OrderResponse.class);
+        ResponseEntity<OrderResponse> response = authRestTemplate.getForEntity(baseUrl + "/" + created.getId(), OrderResponse.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -73,7 +76,7 @@ public class OrderControllerIntegrationTest {
         Order request = new Order();
         request.setSeatLetter("B");
         request.setSeatNumber(3);
-        OrderResponse created = restTemplate.postForEntity(baseUrl, request, OrderResponse.class).getBody();
+        OrderResponse created = authRestTemplate.postForEntity(baseUrl, request, OrderResponse.class).getBody();
 
         Order finalizeRequest = new Order();
         PaymentDetails payment = new PaymentDetails();
@@ -82,7 +85,7 @@ public class OrderControllerIntegrationTest {
         finalizeRequest.setPaymentDetails(payment);
 
         assert created != null;
-        ResponseEntity<OrderResponse> response = restTemplate.postForEntity(
+        ResponseEntity<OrderResponse> response = authRestTemplate.postForEntity(
                 baseUrl + "/" + created.getId() + "/finalize",
                 finalizeRequest,
                 OrderResponse.class

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ProductControllerIntegrationTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private TestRestTemplate restTemplate, authRestTemplate;
 
     @LocalServerPort
     private int port;
@@ -36,11 +36,12 @@ class ProductControllerIntegrationTest {
     @BeforeAll
     void setupCategory() {
         String baseUrl = "http://localhost:" + port + "/api/categories";
+        authRestTemplate = restTemplate.withBasicAuth("admin", "admin");
 
         CategoryRequest categoryRequest = new CategoryRequest();
         categoryRequest.setName("Snacks");
 
-        ResponseEntity<Category> categoryResponse = restTemplate.postForEntity(baseUrl, categoryRequest, Category.class);
+        ResponseEntity<Category> categoryResponse = authRestTemplate.postForEntity(baseUrl, categoryRequest, Category.class);
         snacksCategoryId = Objects.requireNonNull(categoryResponse.getBody()).getId();
 
         assertThat(snacksCategoryId).isNotNull();
@@ -56,7 +57,7 @@ class ProductControllerIntegrationTest {
         productRequest.setStock(100);
         productRequest.setCategoryId(snacksCategoryId);
 
-        ResponseEntity<Product> createResponse = restTemplate.postForEntity(baseUrl, productRequest, Product.class);
+        ResponseEntity<Product> createResponse = authRestTemplate.postForEntity(baseUrl, productRequest, Product.class);
         assertThat(createResponse.getStatusCode().is2xxSuccessful()).isTrue();
 
         Product createdProduct = createResponse.getBody();
@@ -65,7 +66,7 @@ class ProductControllerIntegrationTest {
         assertThat(createdProduct.getCategory().getId()).isEqualTo(snacksCategoryId);
 
         ResponseEntity<ProductResponse[]> getResponse =
-                restTemplate.getForEntity(baseUrl + "?categoryId=" + snacksCategoryId, ProductResponse[].class);
+                authRestTemplate.getForEntity(baseUrl + "?categoryId=" + snacksCategoryId, ProductResponse[].class);
 
         assertThat(getResponse.getStatusCode().is2xxSuccessful()).isTrue();
         ProductResponse[] products = getResponse.getBody();
